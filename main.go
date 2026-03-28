@@ -3,6 +3,9 @@ package main
 import (
 	"net/http"
 	"userservice/user"
+
+	"github.com/go-chi/chi/v5"
+	"github.com/go-chi/chi/v5/middleware"
 )
 
 func main() {
@@ -10,10 +13,16 @@ func main() {
 	service := user.NewService(repo)
 	handler := user.NewHandler(service)
 
-	http.HandleFunc("POST /users", handler.CreateUser)
-	http.HandleFunc("GET /users", handler.GetAllUser)
-	http.HandleFunc("GET /users/{id}", handler.GetUser)
-	http.HandleFunc("DELETE /users/{id}", handler.DeleteUser)
+	r := chi.NewRouter()
 
-	_ = http.ListenAndServe(":8080", nil)
+	r.Use(middleware.Logger)
+	r.Use(middleware.Recoverer)
+	r.Route("/users", func(r chi.Router) {
+		r.Get("/", handler.GetAllUser)
+		r.Get("/{id}", handler.GetUser)
+		r.Post("/", handler.CreateUser)
+		r.Delete("/{id}", handler.DeleteUser)
+	})
+
+	_ = http.ListenAndServe(":8080", r)
 }
