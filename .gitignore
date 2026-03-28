@@ -1,0 +1,30 @@
+# Binaries for programs and plugins
+*.exe
+*.exe~
+*.dll
+*.so
+*.dylib
+
+
+# Test binary, built with `go test -c`
+*.test
+
+
+# Output of the go coverage tool, specifically when used with LiteIDE
+*.out
+
+
+# Dependency directories (uncomment these to ignore the vendor directory)
+# vendor/
+
+# Go workspace file, which is local to a developer's environment and should not be committed
+go.work.lock
+go.work
+
+.gocache
+
+
+# Directories created by some IDEs/editors
+.idea
+.vscode
+.DS_Store   # macOS files
